@@ -7,6 +7,8 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.disable("x-powered-by");
+// Railway terminates TLS at its proxy; trust the single platform proxy for rate limiting.
+app.set("trust proxy", 1);
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(express.json({ limit: "40kb" }));
 app.use("/api/", rateLimit({ windowMs: 60_000, limit: 20, standardHeaders: "draft-7", legacyHeaders: false }));
